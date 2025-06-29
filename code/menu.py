@@ -18,7 +18,7 @@ class Menu:
         pygame.mixer_music.play(-1)
         while True:
             self.window.blit(source=self.surf, dest=self.rect)
-            self.menu_text( 50, "DEAD", COLOR_RED, ((WIN_WIDTH / 2), 70))
+            self.menu_text( 50, "DEA", COLOR_RED, ((WIN_WIDTH / 2), 70))
             self.menu_text( 50, "CEMETERY", COLOR_RED, ((WIN_WIDTH / 2), 120))
 
             for i in range(len(MENU_OPTION)):
