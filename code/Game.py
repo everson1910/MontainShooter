@@ -17,26 +17,26 @@ class Game:
             menu_return = menu.run()
 
             #COD DA AULA COM ERRO ABRIA O LEVEL 1 SE CLICASSE NOS OUTROS LEVELS
-            #if menu_return in [MENU_OPTION[0], MENU_OPTION[1], MENU_OPTION[2]]:
-             #   level = Level(self.window, 'Level1', menu_return)
-              #  level_return = level.run()
-            #elif menu_return == MENU_OPTION[4]:
-
-            #COD DO CHAT PARA PARAR DE ENTRAR NO LEVEL 1 AO CLICAR EM QUALQUER LEVEL
-            if menu_return == MENU_OPTION[0]:  # NEW GAME 1P
+            if menu_return in [MENU_OPTION[0], MENU_OPTION[1], MENU_OPTION[2]]:
                 level = Level(self.window, 'Level1', menu_return)
-                level.run()
-            elif menu_return == MENU_OPTION[1]:  # NEW GAME 2P - COOPERATIVE
-                level = Level(self.window, 'Level2', menu_return)
-                level.run()
-            elif menu_return == MENU_OPTION[2]:  # NEW GAME 2P - COMPETITIVE
-                level = Level(self.window, 'Level3', menu_return)
-                level.run()
-
+                level_return = level.run()
+            elif menu_return == MENU_OPTION[4]:
                 pygame.quit()
                 quit()
             else:
                 pass
+
+                #COD DO CHAT PARA PARAR DE ENTRAR NO LEVEL 1 AO CLICAR EM QUALQUER LEVEL
+            #if menu_return == MENU_OPTION[0]:  # NEW GAME 1P
+             #   level = Level(self.window, 'Level1', menu_return)
+              #  level.run()
+            #elif menu_return == MENU_OPTION[1]:  # NEW GAME 2P - COOPERATIVE
+             #   level = Level(self.window, 'Level2', menu_return)
+              #  level.run()
+            #elif menu_return == MENU_OPTION[2]:  # NEW GAME 2P - COMPETITIVE
+             #   level = Level(self.window, 'Level3', menu_return)
+                #level.run()
+
 
 
 
