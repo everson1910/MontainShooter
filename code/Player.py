@@ -31,4 +31,8 @@ class Player(Entity):
             self.shot_delay = ENTITY_SHOT_DELAY[self.name]
             pressed_key = pygame.key.get_pressed()
             if pressed_key[PLAYER_KEY_SHOOT[self.name]]:
-                return PlayerShot(f'{self.name}Shot', (self.rect.right - 0, self.rect.centery))
+                if self.name == 'Player1':
+                    pos = (self.rect.right - 5, self.rect.centery)  # tiro saindo da frente da nave
+                else:
+                    pos = (self.rect.right - 5, self.rect.centery - 20)  # tiro saindo da frente da Player2
+                return PlayerShot(f'{self.name}Shot', pos)

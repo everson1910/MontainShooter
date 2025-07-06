@@ -8,7 +8,8 @@ import pygame
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.Const import C_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME, C_BLUE, C_MARINE
+from code.Const import C_WHITE, WIN_HEIGHT, MENU_OPTION, EVENT_ENEMY, SPAWN_TIME, C_BLUE, C_MARINE, EVENT_TIMEOUT, \
+    TIMEOUT_STEP, TIMEOUT_LEVEL
 from code.Enemy import Enemy
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
@@ -17,8 +18,8 @@ from code.Player import Player
 
 
 class Level:
-    def __init__(self, window, name, game_mode):
-        self.timeout = 20000  # 20segundos
+    def __init__(self, window, name, game_mode, ):
+        self.timeout = TIMEOUT_LEVEL  # 20segundos
         self.window = window
         self.name = name
         self.game_mode = game_mode
@@ -28,6 +29,7 @@ class Level:
         if game_mode in [MENU_OPTION[1], MENU_OPTION[2]]:
             self.entity_list.append(EntityFactory.get_entity('Player2'))
         pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
+        pygame.time.set_timer(EVENT_TIMEOUT, TIMEOUT_STEP)
 
     #def run(self, ): (CÓDIGO DA AULA QUE ESTAVA DANDO ERRO DA JANELA POR CAUSA DO RUN NO 1° LEVEL)
         #while True:
@@ -54,6 +56,10 @@ class Level:
                 if event.type == EVENT_ENEMY:
                     choice = random.choice(('Enemy1', 'Enemy2'))
                     self.entity_list.append(EntityFactory.get_entity(choice))
+                if event.type == EVENT_TIMEOUT:
+                    self.timeout -= TIMEOUT_STEP
+                    if self.timeout == 0:
+                        return True
             for ent in self.entity_list:
                 self.window.blit(source=ent.surf, dest=ent.rect)
                 ent.move()
