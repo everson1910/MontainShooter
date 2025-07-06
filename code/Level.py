@@ -23,6 +23,7 @@ class Level:
         self.window = window
         self.name = name
         self.game_mode = game_mode
+
         self.entity_list: list[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity(self.name + 'Bg'))
         self.entity_list.append(EntityFactory.get_entity('Player1'))
@@ -43,34 +44,43 @@ class Level:
         pygame.mixer_music.load(f'./asset/{self.name}.mp3')
         pygame.mixer_music.play(-1)
         clock = pygame.time.Clock()
-
         running = True
+
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        running = False  # sai do nível e volta pro menu
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    running = False
                 if event.type == EVENT_ENEMY:
-                    choice = random.choice(('Enemy1', 'Enemy2'))
-                    self.entity_list.append(EntityFactory.get_entity(choice))
+                    choice_type = random.choice(['Enemy1', 'Enemy2'])
+                    self.entity_list.append(EntityFactory.get_entity(choice_type))
                 if event.type == EVENT_TIMEOUT:
-                    self.timeout -= TIMEOUT_STEP
-                    if self.timeout == 0:
-                        return True
-            for ent in self.entity_list:
-                self.window.blit(source=ent.surf, dest=ent.rect)
+                    self.timeout -= clock.get_time()
+                    if self.timeout <= 0:
+                        pygame.mixer_music.stop()
+                        return "NEXT_LEVEL"
+
+            for ent in list(self.entity_list):
+                if ent is None:
+                    continue
+                self.window.blit(ent.surf, ent.rect)
                 ent.move()
                 if isinstance(ent, (Player, Enemy)):
-                    shoot = ent.shoot()
-                    if shoot is not None:
-                        self.entity_list.append(shoot)
-                if ent.name == 'Player1':
+                    shot = ent.shoot()
+                    if shot:
+                        self.entity_list.append(shot)
+                if isinstance(ent, Player):
+                 if ent.name == 'Player1':
                     self.level_text(14,  f'Player1 - Health: {ent.health} | Score: {ent.score}', C_BLUE, (95, 25))
                 if ent.name == 'Player2':
                     self.level_text(14, f'Player2 - Health: {ent.health}| Score: {ent.score}', C_MARINE, (95, 45))
+            players_alive = [e for e in self.entity_list if isinstance(e, Player)]
+            if not players_alive:
+                pygame.mixer_music.stop()
+                return "GAME_OVER"
+
             clock.tick(30)
 
             self.level_text(14,  f'{self.name} - Timeout: {self.timeout / 1000 :.1f}s', C_WHITE, (75, 5))
