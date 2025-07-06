@@ -20,7 +20,7 @@ class Menu:
         while True:
             # DRAW IMAGES
             self.window.blit(source=self.surf, dest=self.rect)
-            self.menu_text(50, "DEA", C_RED, ((WIN_WIDTH / 2), 70))
+            self.menu_text(50, "DEAD", C_RED, ((WIN_WIDTH / 2), 70))
             self.menu_text(50, "CEMETERY", C_RED, ((WIN_WIDTH / 2), 120))
 
             for i in range(len(MENU_OPTION)):
